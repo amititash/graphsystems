@@ -12,7 +12,7 @@ import json
 from cucco import Cucco
 
 cucco = Cucco()
-db = GraphDatabase("http://localhost:7474", username="neo4j", password="l0negeek")
+db = GraphDatabase("http://localhost:7474", username="neo4j", password="")
 
 tx = db.transaction(for_query=True)
  
@@ -52,6 +52,9 @@ Relationship rules
 
 
 # For each line, send it to open ie for info extraction
+ 
+ 
+    
 
 for con in content:
     url = 'http://localhost:3001/gettriplets/?sentence='+urllib.parse.quote_plus(con)
@@ -65,16 +68,16 @@ for con in content:
 
        if graph_result != "err":
            
-           koNodeName1 = db.nodes.create(name=str(graph_result[0]), update=True)
-    
-           koNodeName2 = db.nodes.create(name=str(graph_result[2]), update=True)
+           koNodeName1 = str(graph_result[0]
+           query = ("MERGE (:ko {"name":  koNodeName1 })")
+           results = gdb.query(query)
+           
+           koNodeName2 = str(graph_result[2]
+           query = ("MERGE (:ko {"name":  koNodeName2 })")
+           results = gdb.query(query)
+
            relationship = str(graph_result[1]) if str(graph_result[1]) != "" else "IS_RELATED"
 
-           knowledge_object = db.labels.create("ko")
-           knowledge_object.add(koNodeName1)
-
-           knowledge_object = db.labels.create("ko")
-           knowledge_object.add(koNodeName2)
 
            print("making relationship "+graph_result[0]+"--"+graph_result[1]+"---"+graph_result[2])
            koNodeName1.relationships.create(relationship, koNodeName2)

@@ -1,0 +1,133 @@
+ 
+ show me all orders 
+ g.V().has('label', 'order').values()
+
+ Which countries did we ship to
+g.E().hasLabel('shipped_to')
+
+what did brosina hoffman buy
+ g.V().has('customer_name','Brosina Hoffman').out().values()
+
+ How many were shipped in standard class
+ g.V().has('ship_mode','Standard Class').in().values()
+
+ 
+ g.V().has('ship_mode','Standard Class').out().values()
+
+
+ ---
+
+ Cypher
+
+ What is the total profit 
+ MATCH p=()-[r:PROFIT_EARNED]->()
+ UNWIND nodes(p) as n
+ RETURN sum(DISTINCT(n.profit_amount))
+
+which postal code is where
+ 	MATCH p=(pc:postal_code)-[rel]->(c:city) return p
+
+All products shipped to los angeles
+
+MATCH p=(o:order)-[:SHIPPED_TO]->(pc:postal_code)-[:LOCATED_IN]->(c:city{city_name: "Los Angeles"})
+UNWIND nodes(p) as n 
+RETURN n
+
+MATCH p=(o:order)-[:SHIPPED_TO]->(pc:postal_code)-[:LOCATED_IN]->(c:city{city_name: "Los Angeles"})
+UNWIND nodes(p) as n 
+RETURN (n)-[:PROFIT_EARNED]->(:profit)
+
+
+How much profit did we make for all orders shipped to los angeles
+MATCH p=(o:order)-[:SHIPPED_TO]->(pc:postal_code)-[:LOCATED_IN]->(c:city{city_name: "Los Angeles"}) 
+UNWIND nodes(p) as n MATCH (n)-[:PROFIT_EARNED]->(pro:profit) RETURN Sum(pro.profit_amount)
+
+
+What did claire gute buy
+MATCH c = (cust:customer{customer_name: 'Claire Gute'})-[:PURCHASED]->(o:order)-[:HAS]->(prd:product)
+return prd
+
+
+find cat, sub cat, prodt map
+MATCH subcat = (cat:category)-[]-() UNWIND nodes(subcat) as sb MATCH (sb)-[]-(p:product) RETURN cat.category_name,sb.sub_category_name,p.product_name
+
+What was the total revenue in furniture
+MATCH subcat = (cat:category{category_name:'Furniture'})-[]-() UNWIND nodes(subcat) as sb MATCH (sb)-[]-(p:product) MATCH (p)-[:PURCHASED_FOR]->(sales:sales) RETURN sum(sales.sales_amount)
+
+
+Create node and relationship
+CREATE p = (andres {name:'Andres'})-[:WORKS_AT]->(neo)<-[:WORKS_AT]-(michael {name:
+'Michael'})
+RETURN p
+
+
+How much business did Kelly Williams do this year
+
+MATCH res =  (e:employee{employee_name: 'Kelly Williams'})-[:MANAGES]->(reg:region)<-[:SHIPPED_TO]-(ord:order)
+UNWIND nodes(res) as r 
+MATCH t = (r)-[:HAS]-()
+UNWIND nodes(t) as k
+MATCH g = (k)-[:PURCHASED_FOR]->(s:sales)
+UNWIND nodes(g) as h
+RETURN sum(h.sales_amount)
+
+
+What are the profits by category
+
+MATCH res = (o:order)-[:HAS]->(p:product)-[:PURCHASED_FOR]->(s:sales) 
+UNWIND nodes(res) as r MATCH fin = (r)-[:BELONGS_TO]->(subcat:sub_category)-[:BELONGS_TO]->(cat:category) RETURN s.sales_amount,cat.category_name
+
+
+MATCH fin =  (cat)<-[:BELONGS_TO]-(subcat:sub_category)<-[:BELONGS_TO]-(o:product)-[:PURCHASED_FOR]->(s:sales)
+RETURN cat.category_name, s.sales_amount
+
+
+
+Top selling consumer item
+MATCH res = (sg:segment{segment_name: "Consumer"})<-[:BELONGS_TO]-(prd:product)-[:PURCHASED_FOR]->(s:sales) return prd.product_name,s.sales_amount order by s.sales_amount DESC
+
+
+Who sold the top stuff in consumer
+
+MATCH res = (sg:segment{segment_name: "Consumer"})<-[:BELONGS_TO]-(prd:product)-[:PURCHASED_FOR]->(s:sales)
+UNWIND nodes(res) as r
+MATCH fin = (prd)<-[:HAS]-(o:order)-[:SHIPPED_TO]->(reg:region)<-[:MANAGES]-(e:employee)
+RETURN e.employee_name, s.sales_amount
+order by s.sales_amount DESC
+
+
+
+
+
+//
+
+
+//incorrect query but save for later
+MATCH subcat = (cat:category{category_name:'Furniture'})-[]-()
+UNWIND nodes(subcat) as sb 
+MATCH allp = (sb)-[]-(p:product)
+UNWIND nodes(allp) as indp
+MATCH (indp)<-[:HAS]-(ord:order)-[:PURCHASED_FOR]->(sales:sales)
+RETURN sum(sales.sales_amount)
+
+
+------- FOR REUSE -----
+
+
+MATCH (reg:region)<-[:MANAGES]-()
+ DELETE reg
+
+
+// CREATE RELATIONSHIP BETWEEN EXISTING nodes
+
+ MATCH (reg:region),(emp:employee)
+MATCH (reg:region),(emp:employee)
+WHERE reg.region_name = 'West'AND emp.employee_name = 'Anna Andreadi'
+CREATE (emp)-[mg:MANAGES]->(reg)
+RETURN mg
+
+
+// Which account has the maxmium opportunity
+MATCH (account)-[r:HAS_OPPORTUNITY]->(opportunity)
+RETURN account,
+COUNT(r) ORDER BY COUNT(r) DESC LIMIT 2

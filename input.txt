@@ -1,0 +1,56 @@
+weighted pipeline, manual forecast, and historical trends stack up with likely ranges of outcome for each.
+Manual forecasts show how closely a rep’s callouts align with their final bookings, with trending comparisons.
+Use these reports to hold reps and teams accountable, while visualizing their progress and improving their accuracy over time.
+predictive models consider several factors – from historical patterns and current sales pipeline to average deal size, past rep performance, and time-in-stage.
+analyze historical trends in rep performance, opportunity type, deal stage, and more in minutes.
+The Pipeline Opportunities By Close Date and Opportunity Stage chart delivers the fundamental information needed to manage the sales funnel. Sales managers and executives
+can use this chart to assess the size of the pipeline and to begin forecasting future revenue. 
+what is the current state of our pipeline ?
+how is our pipeline value changing ?
+How did last month’s events affect this month’s pipeline?
+Which employees saw the greatest change last week to their pipeline for the month?
+Which opportunities are we most likely to win ?
+Are reps wasting time and effort on dead opportunities? 
+Which deals deserve immediate attention?
+whats our pipeline like
+what does our pipeline look like
+how many open opportunities do my reps have
+what stage are my open opportunities at
+what is the pipeline inflow 
+whats the number of newly created opportunities
+What about the deals in April that are in the Negotiation Stage? 
+Pipeline Opportunities by Close Date and Opportunity Stage
+Total pipeline by proportion
+what are the top 10 pipeline accounts
+what is the long term pipeline trending ?
+But what about the trend in the size of the sales funnel over time? 
+Is the pipeline increasing or decreasing in size?
+What is our open opportunities by created date ?
+Number of Close Date Month extensions. This counts the number of times the Opportunity Close Date has shifted from one month to another. 
+Number of Days Since The Last Stage Change. This is the number of days since the Opportunity Stage was last updated
+Number of Days Open. This is the number of days the Opportunity has been open. The clock stops counting when the deal is Won or Lost
+what is the Win Rate by Amount
+what is the Win Rate by Count. 
+what is the Opportunity Conversion Ratios
+Average size of Closed Won Deals by sales person
+ Is the funnel leaking excessively?
+ What is the leaking funnel ?
+ Sales versus target measurement
+
+The Pipeline History report gives you a snapshot of opportunities over any time period, all the way back to when you deployed your CRM.
+Our Strike Zone is the probability a deal will be won based on historical win rates of similar opportunities.
+
+How are we performing versus Activity goals
+How many of our opportunities did we win ?
+
+Open Opportunities by Created Date
+
+closed won deals 
+Closed Won by Month and Territory / Salesperson
+who is the top performer for this quarter
+closed won by customer type
+closed won by account
+what are our top 10 accounts won by revenue
+Average deal size for closed won opportunities
+Opportunity conversion rates (or win rates) compare the ratio of closed won to closed lost deals for a given time period.
+Closed Won by Campaign chart tells us how well each marketing campaign performed in generating sales revenue.

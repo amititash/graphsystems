@@ -11,10 +11,12 @@ import json
 # cucco is for text normalisation
 from cucco import Cucco
 
+from pprint import pprint
+
 cucco = Cucco()
 db = GraphDatabase("http://localhost:7474", username="neo4j", password="")
 
-tx = db.transaction(for_query=True)
+#tx = db.transaction(for_query=True)
  
 
 normalizations = [
@@ -68,18 +70,27 @@ for con in content:
 
        if graph_result != "err":
            
-           koNodeName1 = str(graph_result[0]
-           query = ("MERGE (:ko {"name":  koNodeName1 })")
-           results = gdb.query(query)
+           koNodeName1 = str(graph_result[0])
+           query = ("MERGE (ko:ko {name:  {koNodeName1} }) RETURN ko")
+           ko1 = db.query(query, returns=Node, params={"koNodeName1":  koNodeName1 })
+           # ko1 = db.query(query)
            
-           koNodeName2 = str(graph_result[2]
-           query = ("MERGE (:ko {"name":  koNodeName2 })")
-           results = gdb.query(query)
+           koNodeName2 = str(graph_result[2])
+           query = ("MERGE (ko:ko {name:  {koNodeName2} }) RETURN ko")
+           ko2 = db.query(query, returns=Node, params={"koNodeName2":  koNodeName2 })
 
            relationship = str(graph_result[1]) if str(graph_result[1]) != "" else "IS_RELATED"
 
 
+           #print(ko1._elements[0][0])
+           #node_1 = ko1._elements[0][0]
+           #node_2 = ko2._elements[0][0]
+           #node_1.relationships.create(relationship, node_2)
+        
+
            print("making relationship "+graph_result[0]+"--"+graph_result[1]+"---"+graph_result[2])
-           koNodeName1.relationships.create(relationship, koNodeName2)
-           
+           #query = ("MATCH (ko1:ko {name:'"+koNodeName1+"'}),(ko2:ko {name:'"+koNodeName2+"'}) WHERE NOT (ko1)-[:"+relationship+"{weight: 1}]-(ko2) WITH ko1,ko2 CREATE (ko1)-[:"+relationship+"]->(ko2);")
+           query = ("MATCH (ko1:ko {name: '"+koNodeName1+"'}),(ko2:ko{name:'"+koNodeName2+"'}) MERGE (ko1)-[rel:"+relationship+"]->(ko2) SET rel.weight = CASE WHEN rel.weight IS NOT NULL THEN rel.weight+1 ELSE 0 END;")
+           res = db.query(query, returns=Node)
+
     print("finished")

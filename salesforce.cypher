@@ -3,10 +3,10 @@
     
     // Accounts table schema
 
-   LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=1082099617&single=true&output=csv' AS line
+   LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?output=csv' AS line
      
     MERGE (:account { account_id: line.Id, account_name: line.Name, phone: line.Phone, fax: line.Fax, 
-    account_number: coalesce(line.AccountNumber, "none"), website: line.Website, sic: coalesce(line.Sic, "none"), 
+    account_number: coalesce(line.AccountNumber, "none"), website: coalesce(line.Website, "none"), sic: coalesce(line.Sic, "none"), 
     annual_revenue: coalesce(line.AnnualRevenue, "none"), number_employee: coalesce(line.NumberOfEmployees, "none"),
     ticker_symbol: coalesce(line.TickerSymbol, "none"), description: coalesce(line.Description, "none"), 
     created_date: coalesce(line.CreatedDate, "non") })
@@ -37,34 +37,34 @@
     // Account table entities relationship
     
        
-LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=1082099617&single=true&output=csv' AS line
+LOAD CSV WITH headers FROM '' AS line
 
 MATCH (a:account {account_id: line.Id}), (at:account_type {type_label: line.Type})
 CREATE (a)-[:IS_TYPE]->(at)
 
    
-LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=1082099617&single=true&output=csv' AS line
+LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?output=csv' AS line
 
 MATCH (a:account {account_id: line.Id}), (ab:billing_location {billing_street: line.BillingStreet})
 CREATE (a)-[:IS_BILLED]->(ab)
 
-LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=1082099617&single=true&output=csv' AS line
+LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?output=csv' AS line
 
 MATCH (a:account {account_id: line.Id}), (sh:shipping_location {shipping_street: line.ShippingStreet})
 CREATE (a)-[:IS_SHIPPED]->(sh)
 
-LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=1082099617&single=true&output=csv' AS line
+LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?output=csv' AS line
 
 MATCH (sh:shipping_location {shipping_street: line.ShippingStreet}), (c:city {city_name: line.ShippingCity})
 CREATE (sh)-[:LOCATED_IN]->(c)
 
 
-LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=1082099617&single=true&output=csv' AS line
+LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?output=csv' AS line
 
 MATCH (c:city {city_name: line.BillingCity}), (s:state {state_name: line.BillingState})
 CREATE (c)-[:LOCATED_IN]->(s)
 
-LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=1082099617&single=true&output=csv' AS line
+LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?output=csv' AS line
 
 MATCH (co:country {country_name: line.BillingCountry}), (s:state {state_name: line.BillingState})
 CREATE (s)-[:LOCATED_IN]->(co)
@@ -72,11 +72,10 @@ CREATE (s)-[:LOCATED_IN]->(co)
 // Opportunity table schema
 
    
-   LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=264684863&single=true&output=csv
-' AS line
+   LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=264684863&single=true&output=csv' AS line
      
-    MERGE (:opportunity { opportunity_id: line.Id, opportunity_name: line.Name, amount: toInteger(line.Amount), 
-    probability: toFloat(coalesce(line.Probability, 0)), expected_revenue: toInteger(line.ExpectedRevenue), close_date: coalesce(line.CloseDate, "none"), 
+    MERGE (:opportunity { opportunity_id: line.Id, opportunity_name: line.Name, amount: coalesce(toInteger(line.Amount), "none"), 
+    probability: toFloat(coalesce(line.Probability, 0)), expected_revenue: coalesce(toInteger(line.ExpectedRevenue), "none"), close_date: coalesce(line.CloseDate, "none"), 
     is_closed: coalesce(line.IsClosed, "none"), is_won: coalesce(line.IsWon, "none"),
     fiscal_year: coalesce(line.FiscalYear, "none"), fiscal_quarter: coalesce(line.FiscalQuarter, "none"), 
     tracking_number: coalesce(line.TrackingNumber, "none") })
@@ -102,29 +101,28 @@ CREATE (s)-[:LOCATED_IN]->(co)
 // Opportunity relationship
 
 
- LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=264684863&single=true&output=csv
-' AS line
+ LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=264684863&single=true&output=csv' AS line
 
 MATCH acc = (a:account {account_id: line.AccountId}), (o:opportunity {opportunity_id: line.Id})
-MERGE (a)-[:HAS_OPPORTUNITY:]->(o)
+MERGE (a)-[:HAS_OPPORTUNITY]->(o)
 
-WITH opportunity, opportunity_stage
+ LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=264684863&single=true&output=csv' AS line
 MATCH (o:opportunity {opportunity_id:line.Id}), (os:opportunity_stage {stage_name:line.StageName})
 CREATE (o)-[:IS_IN]->(os)
 
-WITH opportunity, opportunity_type
+LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=264684863&single=true&output=csv' AS line
 MATCH (o:opportunity {opportunity_id:line.Id}), (ot:opportunity_type {type_name:line.Type})
 CREATE (o)-[:IS_OF]->(ot)
 
-WITH opportunity, lead_source
+LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=264684863&single=true&output=csv' AS line
 MATCH (o:opportunity {opportunity_id:line.Id}), (ls:lead_source {source_name:line.LeadSource})
 CREATE (o)-[:IS_FROM]->(ls)
 
-WITH opportunity, DeliveryInstallationStatus
+LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=264684863&single=true&output=csv' AS line
 MATCH (o:opportunity {opportunity_id:line.Id}), (ds:delivery_installation_status {status_label:line.DeliveryInstallationStatus})
 CREATE (o)-[:IS_IN]->(ds)
 
-WITH opportunity, billing_location
+LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=264684863&single=true&output=csv' AS line
 MATCH (o:opportunity {opportunity_id:line.Id}), (bl:billing_location {postal_code:line.PostalCode})
 CREATE (o)-[:IS_FROM]->(bl)
 
@@ -162,18 +160,15 @@ CREATE (o)-[:IS_FROM]->(bl)
 MATCH acc = (c:case {case_id: line.Id}), (a:account {account_id: line.AccountId})
 MERGE (c)-[:BELONGS_TO]->(a)
 
-LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=589265446&single=true&output=csv' AS line
-
+ LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=589265446&single=true&output=csv' AS line
 MATCH (c:case {case_id:line.Id}), (ct:case_type {type_name:line.Type})
 CREATE (c)-[:BELONGS_TO]->(ct)
 
-LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=589265446&single=true&output=csv' AS line
-
+ LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=589265446&single=true&output=csv' AS line
 MATCH (c:case {case_id:line.Id}), (co:case_origin {origin_name:line.Origin})
 CREATE (c)-[:ORIGINATED_FROM]->(co)
 
-LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=589265446&single=true&output=csv' AS line
-
+ LOAD CSV WITH headers FROM 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtQeSU7tJnIPr3IpugbQvn6cO6kmPnbrTrA2ivsBkjolUUJm6-LDG7h_KF138NbV_33wtS25ioQsN9/pub?gid=589265446&single=true&output=csv' AS line
 MATCH (c:case {case_id:line.Id}), (u:user {user_id:line.OwnerId})
 CREATE (c)-[:OWNED_BY]->(u)
 

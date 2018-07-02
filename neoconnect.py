@@ -14,7 +14,7 @@ from cucco import Cucco
 from pprint import pprint
 
 cucco = Cucco()
-db = GraphDatabase("http://localhost:7474", username="neo4j", password="")
+db = GraphDatabase("http://localhost:7474", username="neo4j", password="l0negeek")
 
 #tx = db.transaction(for_query=True)
  
